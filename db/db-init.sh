@@ -6,7 +6,6 @@ echo ' -> Setting up new mysql server root password'
 systemctl stop mysqld.service
 rm -rf /var/lib/mysql/*logfile*
 systemctl start mysqld.service
-echo "Auth"
-mysqladmin -u root --password="$tempRootDBPass" password "$mysqlRootPass"
+mysqladmin --user root --password="$tempRootDBPass" password "$mysqlRootPass"
 systemctl status mysqld.service
 echo " -> MySQL server installation completed, root password: $mysqlRootPass";
