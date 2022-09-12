@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 mysqlRootPass="$(pwmake 128)"
 tempRootDBPass="`grep 'temporary.*root@localhost' /var/log/mysqld.log | tail -n 1 | sed 's/.*root@localhost: //'`"
 echo "TEMP PASS $tempRootDBPass"
