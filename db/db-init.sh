@@ -10,7 +10,7 @@ mysqladmin --user root --password="$tempRootDBPass" password "$mysqlRootPass"
 mysql -u root --password="$mysqlRootPass" <<EOF
   CREATE DATABASE laba_db;
   CREATE USER 'root'@'172.0.0.0' IDENTIFIED BY '$mysqlRootPass';
-  GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+  GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.0.0.0' WITH GRANT OPTION;
   FLUSH PRIVILEGES;
 EOF
 systemctl status mysqld.service
