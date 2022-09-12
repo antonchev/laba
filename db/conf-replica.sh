@@ -37,7 +37,7 @@ echo "server-id = 1
 	  binlog_do_db = $DB" >>  /etc/my.cnf
 systemctl restart mysqld.service
 mysql -h $MASTER_HOST "-u$USER" "-p$PASS" $DB <<-EOSQL &
-	GRANT REPLICATION SLAVE ON *.* TO '$USER'@'%' IDENTIFIED BY '$PASS';
+	GRANT REPLICATION SLAVE ON *.* TO '$USER'@'%';
 	FLUSH PRIVILEGES;
 	FLUSH TABLES WITH READ LOCK;
 	DO SLEEP(3600);
