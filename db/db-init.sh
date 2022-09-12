@@ -1,5 +1,5 @@
 #!/bin/bash
-mysqlRootPass="$(pwmake 128)"
+mysqlRootPass="Qoj3R!4GIgeq@Myz@BZ@SYSoxx"
 tempRootDBPass="`grep 'temporary.*root@localhost' /var/log/mysqld.log | tail -n 1 | sed 's/.*root@localhost: //'`"
 echo "TEMP PASS $tempRootDBPass"
 echo ' -> Setting up new mysql server root password'
