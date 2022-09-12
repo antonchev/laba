@@ -32,10 +32,6 @@ SLAVE_HOSTS=(172.20.0.20)
 ##
 
 echo "MASTER: $MASTER_HOST"
-echo "server-id = 1
-	  log-bin=mysql-bin.log
-	  binlog_do_db = $DB" >>  /etc/my.cnf
-systemctl restart mysqld.service
 mysql -h $MASTER_HOST "-u$USER" "-p$PASS" $DB <<-EOSQL &
 	GRANT REPLICATION SLAVE ON *.* TO '$USER'@'%';
 	FLUSH PRIVILEGES;
@@ -47,9 +43,9 @@ echo "  - Waiting for database to be locked"
 sleep 3
 
 # Dump the database (to the client executing this script) while it is locked
-echo "  - Dumping database to $DUMP_FILE"
-mysqldump -h $MASTER_HOST "-u$USER" "-p$PASS" --opt $DB > $DUMP_FILE
-echo "  - Dump complete."
+# echo "  - Dumping database to $DUMP_FILE"
+# mysqldump -h $MASTER_HOST "-u$USER" "-p$PASS" --opt $DB > $DUMP_FILE
+# echo "  - Dump complete."
 
 # Take note of the master log position at the time of dump
 MASTER_STATUS=$(mysql -h $MASTER_HOST "-u$USER" "-p$PASS" -ANe "SHOW MASTER STATUS;" | awk '{print $1 " " $2}')
@@ -80,8 +76,8 @@ do
 	systemctl restart mysqld.service
 	echo "  - Creating database copy"
 	mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" -e "DROP DATABASE IF EXISTS $DB; CREATE DATABASE $DB;"
-	scp $DUMP_FILE $SLAVE_HOST:$DUMP_FILE >/dev/null
-	mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" $DB < $DUMP_FILE
+	# scp $DUMP_FILE $SLAVE_HOST:$DUMP_FILE >/dev/null
+	# mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" $DB < $DUMP_FILE
 
 	echo "  - Setting up slave replication"
 	mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" $DB <<-EOSQL &
@@ -96,7 +92,7 @@ do
 	# Wait for slave to get started and have the correct status
 	sleep 2
 	# Check if replication status is OK
-	SLAVE_OK=$(mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" -e "SHOW SLAVE STATUS\G;" | grep 'Waiting for master')
+	SLAVE_OK=$(mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" -e "SHOW SLAVE STATUS\G;" | grep 'Slave_IO_Running: YES')
 	if [ -z "$SLAVE_OK" ]; then
 		echo "  - Error ! Wrong slave IO state."
 	else
