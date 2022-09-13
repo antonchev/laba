@@ -1,20 +1,4 @@
 #!/bin/bash
-#title			: replication-start.sh
-#description	: This script automates the process of starting a Mysql Replication on 1 master node and N slave nodes.
-#author		 	: Nicolas Di Tullio
-#date			: 20160706
-#version		: 0.2  
-#usage			: bash mysql_replication_autostart.sh
-#bash_version	: 4.3.11(1)-release
-#=============================================================================
-
-#
-# Requirements for this script to work:
-# * The Mysql user defined by the $USER variable must:
-#   - Have the same password $PASS on all mysql instances
-#   - Be able to grant replication privileges
-#   - All hosts must be able to receive mysql commands remotely from the node executing this script
-#
 
 DB=laba_db
 DUMP_FILE="/tmp/$DB-export-$(date +"%Y%m%d%H%M%S").sql"
