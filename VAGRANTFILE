@@ -23,6 +23,7 @@ config.vm.define "web-node-#{i}" do |web_node|
 			apt update -y		
 			apt -y install keepalived
 			apt install nginx -y
+			apt install git -y
 			ufw allow 'Nginx HTTP'
 			ufw reload
 			systemctl status nginx
@@ -46,11 +47,17 @@ vrrp_instance VI_1 {
         auth_pass PASS
     }
     virtual_ipaddress {
-        172.40.0.10
+        172.40.0.10/23
     }
 }\" > /etc/keepalived/keepalived.conf
 		sudo systemctl restart --now keepalived
-        sudo systemctl enable --now keepalived"
+        sudo systemctl enable --now keepalived
+		git clone https://github.com/antonchev/laba
+		cp -f laba/nginx/default /etc/nginx/sites-available/default
+		cp -f laba/app/index.html /var/www/html/index.html
+		cp -f laba/app/index.php /var/www/html/index.php
+		systemctl reload nginx"
+		
    web_node.vm.network :private_network, ip: "172.40.0.#{i+1}0", netmask: "255.255.254.0" #private network mask 23
 end
 end
