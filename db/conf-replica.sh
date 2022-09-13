@@ -58,11 +58,6 @@ relay-log=mysql-relay-bin.log
 log_bin=mysql-bin.log
 binlog_do_db = laba_db"  >>  /etc/my.cnf
 	systemctl restart mysqld.service
-	echo "  - Creating database copy"
-	mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" -e "DROP DATABASE IF EXISTS $DB; CREATE DATABASE $DB;"
-	# scp $DUMP_FILE $SLAVE_HOST:$DUMP_FILE >/dev/null
-	# mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" $DB < $DUMP_FILE
-
 	echo "  - Setting up slave replication"
 	mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" $DB <<-EOSQL &
 		STOP SLAVE;
