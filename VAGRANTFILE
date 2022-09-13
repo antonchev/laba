@@ -28,8 +28,30 @@ config.vm.define "web-node-#{i}" do |web_node|
 			systemctl status nginx
 			apt install php-fpm -y
 			apt install php-mysql -y
-        "
-   web_node.vm.network :private_network, ip: "172.40.0.#{i}0", netmask: "255.255.254.0" #private network mask 23
+			echo \"
+! Configuration File for keepalived
+
+global_defs {
+
+}
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface eth1
+    virtual_router_id 101
+    priority 10#{2-i}
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass PASS
+    }
+    virtual_ipaddress {
+        172.40.0.10
+    }
+}\" > /etc/keepalived/keepalived.conf
+		sudo systemctl restart --now keepalived
+        sudo systemctl enable --now keepalived"
+   web_node.vm.network :private_network, ip: "172.40.0.#{i+1}0", netmask: "255.255.254.0" #private network mask 23
 end
 end
 # db-nodes.
