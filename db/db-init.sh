@@ -14,10 +14,7 @@ mysql -u root --password="$mysqlRootPass" <<EOF
   GRANT ALL PRIVILEGES ON *.* TO 'repl'@'%' WITH GRANT OPTION;
   FLUSH PRIVILEGES;
   use laba_db;
-  CREATE TABLE Example (
-    value varchar(255),
-  
-);
+  CREATE TABLE Example (value varchar(255));
 EOF
 systemctl status mysqld.service
 echo " -> MySQL server installation completed, root password: $mysqlRootPass";
