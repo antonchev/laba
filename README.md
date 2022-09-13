@@ -1,5 +1,5 @@
 # Тестовое задание Devops
 Реализация:
-```bash
+```shell
 vagrant up
 ```
