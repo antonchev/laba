@@ -13,6 +13,11 @@ mysql -u root --password="$mysqlRootPass" <<EOF
   ALTER USER 'repl'@'%' IDENTIFIED WITH mysql_native_password BY 'Qoj3R!4GIgeq@Myz@BZ@SYSoxx';
   GRANT ALL PRIVILEGES ON *.* TO 'repl'@'%' WITH GRANT OPTION;
   FLUSH PRIVILEGES;
+  use laba_db;
+  CREATE TABLE Example (
+    value varchar(255),
+  
+);
 EOF
 systemctl status mysqld.service
 echo " -> MySQL server installation completed, root password: $mysqlRootPass";
