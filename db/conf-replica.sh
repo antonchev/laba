@@ -78,7 +78,7 @@ binlog_do_db = laba_db"  >>  /etc/my.cnf
 	# Check if replication status is OK
         SLAVE_OK=$(mysql -h $SLAVE_HOST "-u$USER" "-p$PASS" -e "SHOW SLAVE STATUS\G;" | grep 'Slave_IO_Running: Yes')
         echo "RESULT: $SLAVE_OK"
-        if [ -z "$SLAVE_OK"]
+        if [ -z "$SLAVE_OK" ]
         then
                 echo "  - Error ! Wrong slave IO state."
         else
